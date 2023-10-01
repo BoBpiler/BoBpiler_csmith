@@ -41,6 +41,10 @@ project(csmith)
 
 ###############################################################################
 
+if(MSVC)
+  set(BUILD_SHARED_LIBS true)
+  set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS true)
+endif()
 # Determine the short git hash for the source tree.  The logic here follows the
 # logic in the `git-hash.sh` script.
 #
