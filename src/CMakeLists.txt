@@ -147,7 +147,7 @@ set(csmith_SOURCES
   ProbabilityTable.h
   RandomNumber.cpp
   RandomNumber.h
-  RandomProgramGenerator.cpp
+  csmith.cpp
   SafeOpFlags.cpp
   SafeOpFlags.h
   Sequence.cpp
@@ -204,9 +204,10 @@ if(NOT HAVE_LRAND48)
     )
 endif()
 
-add_executable(csmith
-  ${csmith_SOURCES}
-  )
+#add_executable(csmith
+#  ${csmith_SOURCES}
+#  )
+add_library(csmith SHARED ${csmith_SOURCES})
 
 # Use C++14.
 set_target_properties(csmith PROPERTIES

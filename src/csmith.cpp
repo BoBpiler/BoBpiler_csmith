@@ -1,113 +1,5 @@
-// -*- mode: C++ -*-
-//
-// Copyright (c) 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018 The University of Utah
-// All rights reserved.
-//
-// This file is part of `csmith', a random generator of C programs.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are met:
-//
-//   * Redistributions of source code must retain the above copyright notice,
-//     this list of conditions and the following disclaimer.
-//
-//   * Redistributions in binary form must reproduce the above copyright
-//     notice, this list of conditions and the following disclaimer in the
-//     documentation and/or other materials provided with the distribution.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-// ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
-// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-// POSSIBILITY OF SUCH DAMAGE.
-
-//
-// This file was derived from a random program generator written by Bryan
-// Turner.  The attributions in that file was:
-//
-// Random Program Generator
-// Bryan Turner (bryan.turner@pobox.com)
-// July, 2005
-//
-// Contributions and bug fixes by:
-// Jan-2007 : Mat Hostetter - Explicit "return 0" for main()
-//
-
-/*
-Random C/C++ Program Generator
-------------------------------
-1) Create a set of random types to be used throughout the program
-2) Create the main func.
-3) Generate a random block of statements with maximum control & expression nesting depths.
-4) If new functions were defined in #3, then loop back to fill in its body.
-5) When a maximum number of functions is reached, stop generating new functions and finish off the bodies of the remaining funcs.
-6) Output generated program.
-
-GOALS:
-- Locate basic errors in compiler front-ends (crashes, etc).
-- Ferret out correctness errors in optimization passes.
-- Support the design of tools to search for improved optimization paths (partial exection, etc).
-
-TODO:
-- Protect back links with a global DEPTH, don't call if DEPTH is too high (avoid infinite recursion)
-- Main function generates hash of global state as output of program - use to locate optimization errors.
-	- Compile in Debug mode vs. Optimized mode, compare hash value at program termination.
-- Improve hash function; use stronger hashing (ARCFOUR) and perform hashing at random points in the graph.
-	- Output only after successful program termination.
-
-FUTURE:
-- Complex types
-- Type-correct expressions
-- Some substitutions allowed
-	- int, char, short, long, float, double - all interchangeable to some degree (use appropriate casts)
-	- array <--> pointer
-	- pointer promotion (ie: passing the pointer to a local var, or droping the pointer to pass by value)
-- Memory Allocation & Manipulation?
-	- Choose random functions to perform allocations
-	- Choose random children/ancestors to perform deallocations
-	- Work from leaves to root
-	- If node uses pointer or array, it is potential heap store allocated.
-*/
-
-#if HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
-#ifdef WIN32
-#pragma warning(disable : 4786)   /* Disable annoying warning messages */
-#endif
-
-#include <ostream>
-#include <fstream>
-#include <cstring>
-#include <cstdio>
-
-#include "Common.h"
-
-#include "CGOptions.h"
-#include "AbsProgramGenerator.h"
-
-#include "git_version.h"
-#include "platform.h"
-#include "random.h"
-
+#include "csmith.h"
 using namespace std;
-
-//#define PACKAGE_STRING "csmith 1.1.1"
-///////////////////////////////////////////////////////////////////////////////
-
-// ----------------------------------------------------------------------------
-// Globals
-
-// Program seed - allow user to regenerate the same program on different
-// platforms.
-static unsigned long g_Seed = 0;
 
 // ----------------------------------------------------------------------------
 static void
@@ -361,7 +253,7 @@ void arg_check(int argc, int i)
 
 // ----------------------------------------------------------------------------
 int
-main(int argc, char **argv)
+gen_csmith(int argc, char **argv)
 {
 	g_Seed = platform_gen_seed();
 
