@@ -17,12 +17,11 @@
 #include <fstream>
 #include <ostream>
 #include <iostream>
-// #include <nlohmann/json.hpp>
 #include <sys/types.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sstream>
-// using json = nlohmann::json;
+
 using namespace std;
 
 static unsigned long g_seed = 0; // 글로벌 시드 변수
@@ -1661,18 +1660,13 @@ int main(int argc, char **argv) {
 		    int l_status;
             waitpid(l_pid, &l_status, 0);
 
-            // // Data to JSON Struct
-            // json l_csmith_result;
-            // l_csmith_result["generator"] = "csmith";
-            // l_csmith_result["return_code"] = l_status;
-            // std::string l_json_str = l_csmith_result.dump();
-
-            // std::cout << l_json_str << std::endl;
-			// std::cout.flush();
-            std::stringstream l_result;
-            l_result << "{ 'generator' : 'csmith', 'return_code' : '" << l_status << "' }";
-            std::cout << l_result.str() << std::endl;
-            std::cout.flush();
+			std::stringstream json_stream;
+			json_stream << "{";
+			json_stream << " \"generator\": \"csmith\",";
+			json_stream << " \"return_code\": \"" << l_status << "\"";
+			json_stream << "}";
+			std::cout << json_stream.str() << std::endl;
+			std::cout.flush();
         }
     }
 	return 0;
